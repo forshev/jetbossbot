@@ -9,6 +9,8 @@ def init_keyboard():
 
     markup.add('/came')
     markup.add('/left')
+    markup.add('/late')
+    markup.add('/timeoff')
     markup.add('/location')
 
     return markup
@@ -24,5 +26,34 @@ def location_keyboard():
     )
 
     markup.add(location_button)
+
+    return markup
+
+
+def cancel_keyboard():
+    markup = types.InlineKeyboardMarkup()
+    cancel_button = types.InlineKeyboardButton(
+        text="Отмена",
+        callback_data='cancel'
+    )
+
+    markup.add(cancel_button)
+
+    return markup
+
+
+def yes_no_keyboard():
+    markup = types.InlineKeyboardMarkup()
+    yes_button = types.InlineKeyboardButton(
+        text="Да",
+        callback_data='Yes'
+    )
+    no_button = types.InlineKeyboardButton(
+        text="Нет",
+        callback_data='No'
+    )
+
+    markup.add(yes_button)
+    markup.add(no_button)
 
     return markup
