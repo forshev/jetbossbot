@@ -75,6 +75,32 @@ def late_handler(message):
 
     bot.send_message(message.chat.id, reply, reply_markup=markup)
 
+    bot.register_next_step_handler(message, process_late)
+
+
+def process_late(message):
+    try:
+        reason, time = message.text.split('@')
+
+        markup = yes_no_keyboard()
+        reply = reason_message.format(reason, time)
+
+        bot.send_message(
+            message.chat.id,
+            reply,
+            reply_markup=markup)
+
+    except Exception as e:
+        print(e)
+        bot.reply_to(message, 'Incorrect message')
+
+
+@bot.callback_query_handler(lambda call: call.data == 'Yes')
+def callback_late_yes(call):
+    reply = 'saved'
+
+    bot.send_message(call.message.chat.id, reply)
+
 
 @bot.message_handler(commands=['timeoff'])
 def timeoff_handler(message):
