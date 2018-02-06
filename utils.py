@@ -7,11 +7,10 @@ def init_keyboard():
         row_width=1, resize_keyboard=True
     )
 
-    markup.add('/came')
-    markup.add('/left')
-    markup.add('/late')
-    markup.add('/timeoff')
-    markup.add('/location')
+    commands = ['/came', '/left', '/late',
+                '/timeoff', '/location']
+
+    markup.add(*commands)
 
     return markup
 

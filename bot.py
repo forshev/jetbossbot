@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import db_utils
 import config
 import telebot
 import time
@@ -16,6 +17,7 @@ def start_handler(message):
     markup = init_keyboard()
     reply = start_message
 
+    dbUtils.set_state(message.chat.id, config.States.S_ENTER_NAME.value)
     bot.send_message(message.chat.id, reply, reply_markup=markup)
 
 
@@ -97,9 +99,25 @@ def process_late(message):
 
 @bot.callback_query_handler(lambda call: call.data == 'Yes')
 def callback_late_yes(call):
-    reply = 'saved'
+    try:
+        message_text = call.message.text
+        reason, time = message_text.split('\n')
+        reason = reason[9:]
+        time = time[7:]
+        reply = 'saved'
 
-    bot.send_message(call.message.chat.id, reply)
+        bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            text=message_text
+        )
+        bot.answer_callback_query(
+            callback_query_id=call.id,
+            show_alert=False,
+            text=reply)
+
+    except Exception as e:
+        print(e)
 
 
 @bot.message_handler(commands=['timeoff'])
